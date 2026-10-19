@@ -24,7 +24,8 @@ service cloud.firestore {
       return data.keys().hasAll(['id', 'artist_name', 'song_title']) &&
         data.id is string && data.id.size() <= 128 &&
         data.artist_name is string && data.artist_name.size() <= 200 &&
-        data.song_title is string && data.song_title.size() <= 200;
+        data.song_title is string && data.song_title.size() <= 200 &&
+        (!('genre' in data) || (data.genre is string && data.genre.size() <= 50));
     }
 
     function isValidQueueItem(data) {
@@ -33,7 +34,9 @@ service cloud.firestore {
         data.user_name is string && data.user_name.size() <= 100 &&
         data.song_id is string && data.song_id.size() <= 128 &&
         data.timestamp is number &&
-        data.status is string && data.status.size() <= 30;
+        data.status is string && data.status.size() <= 30 &&
+        (!('score' in data) || (data.score is number && data.score >= 1 && data.score <= 100)) &&
+        (!('scoredAt' in data) || data.scoredAt is number);
     }
 
     function isValidComment(data) {
